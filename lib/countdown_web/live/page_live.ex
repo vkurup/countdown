@@ -1,4 +1,8 @@
 defmodule CountdownWeb.PageLive do
+  @moduledoc """
+  LiveView page for the Countdown timer.
+  """
+
   use CountdownWeb, :live_view
 
   @impl true
