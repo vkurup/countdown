@@ -1,48 +1,42 @@
 <section class="phx-hero">
-  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
-  <p>Peace-of-mind from prototype to production</p>
+  <h1><%= gettext "Welcome to %{name}!", name: "Countdown" %></h1>
+  <div>
+    Time remaining: <%= minutes(@time_remaining) %>:<%= seconds(@time_remaining) %>
+  </div>
 
-  <form phx-change="suggest" phx-submit="search">
-    <input type="text" name="q" value="<%= @query %>" placeholder="Live dependency search" list="results" autocomplete="off"/>
-    <datalist id="results">
-      <%= for {app, _vsn} <- @results do %>
-        <option value="<%= app %>"><%= app %></option>
-      <% end %>
-    </datalist>
-    <button type="submit" phx-disable-with="Searching...">Go to Hexdocs</button>
-  </form>
-</section>
+  <div>
+    <%= if @is_running do %>
+    <button phx-click="pause">Pause</button>
+    <% else %>
+    <button phx-click="start">Start</button>
+    <% end %>
+    <button phx-click="reset">Reset</button>
+  </div>
 
-<section class="row">
-  <article class="column">
-    <h2>Resources</h2>
-    <ul>
-      <li>
-        <a href="https://hexdocs.pm/phoenix/overview.html">Guides &amp; Docs</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix">Source</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix/blob/v1.5/CHANGELOG.md">v1.5 Changelog</a>
-      </li>
-    </ul>
-  </article>
-  <article class="column">
-    <h2>Help</h2>
-    <ul>
-      <li>
-        <a href="https://elixirforum.com/c/phoenix-forum">Forum</a>
-      </li>
-      <li>
-        <a href="https://webchat.freenode.net/?channels=elixir-lang">#elixir-lang on Freenode IRC</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/elixirphoenix">Twitter @elixirphoenix</a>
-      </li>
-      <li>
-        <a href="https://elixir-slackin.herokuapp.com/">Elixir on Slack</a>
-      </li>
-    </ul>
-  </article>
+  <div>
+    <%= if @is_done do %>
+    <p>
+      Great job, go take a break!
+    </p>
+    <audio
+      phx-hook="PlaySound"
+      id="ding"
+      src="<%= Routes.static_path(@socket, "/sounds/ding.mp3") %>"
+      >
+    </audio>
+    <% end %>
+
+    <%= if @is_running do %>
+    <p>
+      Keep working!
+    </p>
+    <audio
+      phx-hook="PlaySound"
+      id="tick"
+      loop
+      src="<%= Routes.static_path(@socket, "/sounds/tick.mp3") %>"
+      >
+    </audio>
+    <% end %>
+  </div>
 </section>
