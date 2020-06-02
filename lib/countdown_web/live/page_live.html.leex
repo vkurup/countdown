@@ -1,13 +1,12 @@
 <section class="phx-hero">
   <h1><%= gettext "Welcome to %{name}!", name: "Countdown" %></h1>
   <div>
-    <%= if !@is_running and !@is_done do %>
+    <%= if !@is_running and !@is_done and !@is_paused do %>
     <form phx-change="change">
     How many minutes? <input name=timer_length value="25" type=number style="width: 60px">
     </form>
-    <% else %>
-    Time remaining: <%= minutes(@time_remaining) %>:<%= seconds(@time_remaining) %>
     <% end %>
+    Time remaining: <%= minutes(@time_remaining) %>:<%= seconds(@time_remaining) %>
   </div>
 
   <div>

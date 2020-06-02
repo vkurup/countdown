@@ -9,14 +9,20 @@ defmodule CountdownWeb.PageLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, time_remaining: @timer_length, is_running: false, is_done: false)}
+    {:ok,
+     assign(socket,
+       time_remaining: @timer_length,
+       is_running: false,
+       is_done: false,
+       is_paused: false
+     )}
   end
 
   @impl true
   def handle_event("start", _value, %{assigns: %{is_running: false}} = socket) do
     new_socket =
       socket
-      |> assign(is_running: true, is_done: false)
+      |> assign(is_running: true, is_done: false, is_paused: false)
       |> schedule_tick()
       |> put_flash(:info, "Timer started.")
 
@@ -42,7 +48,7 @@ defmodule CountdownWeb.PageLive do
   def handle_event("pause", _value, socket) do
     new_socket =
       socket
-      |> assign(is_running: false)
+      |> assign(is_running: false, is_paused: true)
       |> put_flash(:info, "Timer paused.")
 
     {:noreply, new_socket}
@@ -101,7 +107,7 @@ defmodule CountdownWeb.PageLive do
   end
 
   defp reset_timer(socket) do
-    assign(socket, time_remaining: @timer_length, is_running: false)
+    assign(socket, time_remaining: @timer_length, is_running: false, is_paused: false)
   end
 
   defp schedule_tick(socket) do
