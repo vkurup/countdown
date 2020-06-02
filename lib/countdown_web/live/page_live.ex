@@ -24,6 +24,11 @@ defmodule CountdownWeb.PageLive do
   end
 
   @impl true
+  def handle_event("change", %{"timer_length" => ""}, socket) do
+    {:noreply, assign(socket, time_remaining: 1)}
+  end
+
+  @impl true
   def handle_event("change", %{"timer_length" => timer_length}, socket) do
     {:noreply, assign(socket, time_remaining: String.to_integer(timer_length) * 60)}
   end
